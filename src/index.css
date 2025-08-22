@@ -2,41 +2,71 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* AI Travel Planner Design System - Travel-themed with royal gradients and glassmorphism */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    /* Travel-themed light background */
+    --background: 210 17% 98%;
     --foreground: 222.2 84% 4.9%;
 
-    --card: 0 0% 100%;
+    /* Glassmorphism cards */
+    --card: 0 0% 100% / 0.8;
     --card-foreground: 222.2 84% 4.9%;
+    --card-border: 0 0% 100% / 0.2;
 
-    --popover: 0 0% 100%;
+    --popover: 0 0% 100% / 0.95;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Royal Purple Primary */
+    --primary: 264 83% 57%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 264 83% 67%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Teal Accent */
+    --secondary: 173 80% 40%;
+    --secondary-foreground: 0 0% 100%;
+    --secondary-glow: 173 80% 50%;
+
+    /* Indigo Support */
+    --accent: 236 72% 64%;
+    --accent-foreground: 0 0% 100%;
+    --accent-glow: 236 72% 74%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 264 83% 57%;
 
-    --radius: 0.5rem;
+    /* Travel-themed gradients */
+    --gradient-royal: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    --gradient-ocean: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--accent)));
+    --gradient-sunset: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary) / 0.9), hsl(var(--secondary) / 0.9));
+    
+    /* Glassmorphism effects */
+    --glass-bg: hsla(0, 0%, 100%, 0.1);
+    --glass-border: hsla(0, 0%, 100%, 0.2);
+    --glass-shadow: 0 8px 32px hsla(264, 83%, 57%, 0.12);
+    --glass-backdrop: blur(10px);
+
+    /* Shadows & Glows */
+    --shadow-soft: 0 4px 20px hsla(0, 0%, 0%, 0.05);
+    --shadow-medium: 0 8px 30px hsla(0, 0%, 0%, 0.1);
+    --shadow-travel: 0 12px 40px hsla(264, 83%, 57%, 0.15);
+    --glow-primary: 0 0 30px hsla(var(--primary), 0.3);
+    --glow-secondary: 0 0 30px hsla(var(--secondary), 0.3);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    --radius: 1rem;
 
     --sidebar-background: 0 0% 98%;
 
