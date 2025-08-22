@@ -23,7 +23,9 @@ const ChatBot = () => {
   const [inputText, setInputText] = useState("");
   const [isListening, setIsListening] = useState(false);
 
-  const sendMessage = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const sendMessage = async () => {
     if (!inputText.trim()) return;
 
     const userMessage: Message = {
@@ -34,9 +36,46 @@ const ChatBot = () => {
     };
 
     setMessages(prev => [...prev, userMessage]);
+    setIsLoading(true);
 
-    // Simulate AI response
-    setTimeout(() => {
+    try {
+      // Send to n8n webhook
+      const webhookData = {
+        action: "chat_message",
+        submittedAt: new Date().toISOString(),
+        message: inputText,
+        conversation_history: messages
+      };
+
+      const response = await fetch("https://naina123.app.n8n.cloud/webhook-test/e75cd87b-d51b-4ffb-8880-9bc4f7c8a595", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(webhookData),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("n8n response:", result);
+        
+        // Use AI response if available, otherwise use fallback
+        const aiResponseText = result.ai_response || "That sounds like an amazing destination! Could you tell me more about your travel dates and how many people will be joining you?";
+        
+        const aiResponse: Message = {
+          id: (Date.now() + 1).toString(),
+          text: aiResponseText,
+          isUser: false,
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, aiResponse]);
+      } else {
+        throw new Error("Webhook failed");
+      }
+    } catch (error) {
+      console.error("Error sending to webhook:", error);
+      
+      // Fallback AI response
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
         text: "That sounds like an amazing destination! Could you tell me more about your travel dates and how many people will be joining you?",
@@ -44,7 +83,9 @@ const ChatBot = () => {
         timestamp: new Date()
       };
       setMessages(prev => [...prev, aiResponse]);
-    }, 1000);
+    } finally {
+      setIsLoading(false);
+    }
 
     setInputText("");
   };
@@ -124,9 +165,14 @@ const ChatBot = () => {
             variant="hero"
             size="icon"
             onClick={sendMessage}
+            disabled={isLoading}
             className="rounded-full"
           >
-            <Send className="w-4 h-4" />
+            {isLoading ? (
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <Send className="w-4 h-4" />
+            )}
           </Button>
         </GlassCard>
 

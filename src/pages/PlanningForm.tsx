@@ -74,16 +74,37 @@ const PlanningForm = () => {
   };
 
   const handleSubmit = async () => {
-    // Here you would send to n8n webhook
-    const response = {
-      action: "start_planning",
-      submittedAt: new Date().toISOString(),
-      form_state: formData
-    };
-    
-    console.log("Submitting to n8n:", response);
-    // Navigate to thank you page
-    navigate("/thank-you");
+    try {
+      const webhookData = {
+        action: "start_planning",
+        submittedAt: new Date().toISOString(),
+        form_state: formData
+      };
+      
+      console.log("Sending to n8n webhook:", webhookData);
+      
+      const response = await fetch("https://naina123.app.n8n.cloud/webhook-test/e75cd87b-d51b-4ffb-8880-9bc4f7c8a595", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(webhookData),
+      });
+      
+      if (response.ok) {
+        console.log("Successfully sent to n8n");
+        // Navigate to thank you page
+        navigate("/thank-you");
+      } else {
+        console.error("Failed to send to n8n:", response.status);
+        // Still navigate to thank you page for demo purposes
+        navigate("/thank-you");
+      }
+    } catch (error) {
+      console.error("Error sending to webhook:", error);
+      // Still navigate to thank you page for demo purposes
+      navigate("/thank-you");
+    }
   };
 
   const nextStep = () => {
